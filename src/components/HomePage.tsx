@@ -304,11 +304,11 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
               <div className="space-y-3 text-slate-400 text-sm">
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-blue-400" />
-                  (11) 3456-7890
+                  (11) 2081-0106
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  contato@dentalcare.com
+                  cobcontato@gmail.com
                 </div>
               </div>
             </div>
@@ -318,7 +318,7 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
               <div className="space-y-3 text-slate-400 text-sm">
                 <div className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
-                  <span>Av. Paulista, 1000<br />São Paulo - SP</span>
+                  <span>R. Gomes Cardim, 55 - Brás<br />São Paulo - SP</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-blue-400" />

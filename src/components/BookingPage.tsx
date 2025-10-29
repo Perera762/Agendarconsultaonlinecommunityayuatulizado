@@ -530,7 +530,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
             18:00
           </p>
           <p className="mt-1">
-            Em caso de emergência, ligue: (11) 3456-7890
+            Em caso de emergência, ligue: (11) 2081-0106
           </p>
         </div>
       </div>
