@@ -9,8 +9,11 @@ import {
   ChevronLeft,
   AlertCircle,
   ArrowLeft,
+  Moon,
+  Sun,
 } from "lucide-react";
 import logoImage from "figma:asset/57deffdb02e805463990fbf1ee80a9891070f68a.png";
+import { useTheme } from "./ThemeProvider";
 
 interface BookingPageProps {
   onBack: () => void;
@@ -18,6 +21,7 @@ interface BookingPageProps {
 }
 
 export function BookingPage({ onBack, patientId }: BookingPageProps) {
+  const { theme, toggleTheme } = useTheme();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     dentista: "",
@@ -160,13 +164,26 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
       <div className="w-full max-w-3xl">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 relative">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="absolute right-0 top-0 p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
+          </button>
+
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6"
           >
             <ArrowLeft className="w-5 h-5" />
             Voltar para início
@@ -178,11 +195,11 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
               alt="Logo COB"
               className="w-12 h-12 object-contain"
             />
-            <h1 className="text-slate-900">
+            <h1 className="text-slate-900 dark:text-white">
               Portal do Paciente
             </h1>
           </div>
-          <p className="text-slate-600">
+          <p className="text-slate-600 dark:text-slate-400">
             Agende sua consulta odontológica de forma rápida e
             segura
           </p>
@@ -196,10 +213,10 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                     step === currentStep
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/50"
+                      ? "bg-blue-600 dark:bg-blue-500 text-white shadow-lg shadow-blue-500/50"
                       : step < currentStep
-                        ? "bg-blue-100 text-blue-600 border-2 border-blue-600"
-                        : "bg-slate-200 text-slate-400 border-2 border-slate-300"
+                        ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 border-2 border-blue-600 dark:border-blue-400"
+                        : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 border-2 border-slate-300 dark:border-slate-600"
                   }`}
                 >
                   {step < currentStep ? (
@@ -209,7 +226,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                   )}
                 </div>
                 <span
-                  className={`text-xs mt-2 ${step === currentStep ? "text-blue-600" : "text-slate-400"}`}
+                  className={`text-xs mt-2 ${step === currentStep ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`}
                 >
                   {step === 1 && "Seleção"}
                   {step === 2 && "Data/Hora"}
@@ -221,8 +238,8 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                 <div
                   className={`h-0.5 w-16 mx-2 transition-all duration-300 ${
                     step < currentStep
-                      ? "bg-blue-600"
-                      : "bg-slate-300"
+                      ? "bg-blue-600 dark:bg-blue-500"
+                      : "bg-slate-300 dark:bg-slate-600"
                   }`}
                 />
               )}
@@ -231,12 +248,12 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white backdrop-blur-sm border border-slate-200 rounded-2xl shadow-2xl p-8">
+        <div className="bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-8 transition-colors duration-300">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-red-600 text-sm">{error}</p>
+            <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
             </div>
           )}
 
@@ -244,15 +261,15 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
           {currentStep === 1 && (
             <div className="space-y-6 animate-fadeIn">
               <div>
-                <h2 className="text-slate-900 mb-6">
+                <h2 className="text-slate-900 dark:text-white mb-6">
                   Selecione o Dentista e Procedimento
                 </h2>
 
                 <div className="space-y-6">
                   {/* Dentista */}
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-3">
-                      <User className="w-5 h-5 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-3">
+                      <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       Dentista
                     </label>
                     <select
@@ -263,7 +280,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                           e.target.value,
                         )
                       }
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     >
                       <option value="">
                         Escolha um dentista
@@ -282,8 +299,8 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
 
                   {/* Procedimento */}
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-3">
-                      <Stethoscope className="w-5 h-5 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-3">
+                      <Stethoscope className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       Procedimento
                     </label>
                     <select
@@ -294,7 +311,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                           e.target.value,
                         )
                       }
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     >
                       <option value="">
                         Escolha um procedimento
@@ -315,15 +332,15 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
           {currentStep === 2 && (
             <div className="space-y-6 animate-fadeIn">
               <div>
-                <h2 className="text-slate-900 mb-6">
+                <h2 className="text-slate-900 dark:text-white mb-6">
                   Escolha Data e Horário
                 </h2>
 
                 <div className="space-y-6">
                   {/* Data */}
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-3">
-                      <Calendar className="w-5 h-5 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-3">
+                      <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       Data da Consulta
                     </label>
                     <input
@@ -338,14 +355,14 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                       min={
                         new Date().toISOString().split("T")[0]
                       }
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   {/* Hora */}
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-3">
-                      <Clock className="w-5 h-5 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-3">
+                      <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       Horário
                     </label>
                     <input
@@ -357,16 +374,16 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
                           e.target.value,
                         )
                       }
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
-                    <p className="text-xs text-slate-500 mt-2">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                       Horários disponíveis: 08:00 às 18:00
                     </p>
                   </div>
 
                   {/* Aviso de horários ocupados */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-blue-700 text-sm">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <p className="text-blue-700 dark:text-blue-400 text-sm">
                       <strong>Horários já ocupados:</strong>{" "}
                       {horariosOcupados.join(", ")}
                     </p>
@@ -380,51 +397,51 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
           {currentStep === 3 && (
             <div className="space-y-6 animate-fadeIn">
               <div>
-                <h2 className="text-slate-900 mb-6">
+                <h2 className="text-slate-900 dark:text-white mb-6">
                   Confirme seus Dados
                 </h2>
 
                 <div className="space-y-4">
-                  <div className="bg-slate-50 rounded-lg p-6 space-y-4">
-                    <div className="flex justify-between items-start border-b border-slate-200 pb-4">
-                      <span className="text-slate-600">
+                  <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6 space-y-4">
+                    <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-600 pb-4">
+                      <span className="text-slate-600 dark:text-slate-400">
                         Dentista:
                       </span>
-                      <span className="text-slate-900 text-right max-w-xs">
+                      <span className="text-slate-900 dark:text-white text-right max-w-xs">
                         {getDentistaNome()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-start border-b border-slate-200 pb-4">
-                      <span className="text-slate-600">
+                    <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-600 pb-4">
+                      <span className="text-slate-600 dark:text-slate-400">
                         Procedimento:
                       </span>
-                      <span className="text-slate-900 text-right">
+                      <span className="text-slate-900 dark:text-white text-right">
                         {getProcedimentoNome()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-start border-b border-slate-200 pb-4">
-                      <span className="text-slate-600">
+                    <div className="flex justify-between items-start border-b border-slate-200 dark:border-slate-600 pb-4">
+                      <span className="text-slate-600 dark:text-slate-400">
                         Data:
                       </span>
-                      <span className="text-slate-900">
+                      <span className="text-slate-900 dark:text-white">
                         {formatarData(formData.data)}
                       </span>
                     </div>
 
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-600">
+                      <span className="text-slate-600 dark:text-slate-400">
                         Horário:
                       </span>
-                      <span className="text-slate-900">
+                      <span className="text-slate-900 dark:text-white">
                         {formData.hora}
                       </span>
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-blue-700 text-sm">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <p className="text-blue-700 dark:text-blue-400 text-sm">
                       Ao confirmar, você receberá um e-mail com
                       os detalhes da consulta.
                     </p>
@@ -438,49 +455,49 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
           {currentStep === 4 && (
             <div className="space-y-6 animate-fadeIn text-center">
               <div className="flex justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center animate-bounce-slow">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 rounded-full flex items-center justify-center animate-bounce-slow">
                   <CheckCircle2 className="w-12 h-12 text-white" />
                 </div>
               </div>
 
               <div>
-                <h2 className="text-slate-900 mb-4">
+                <h2 className="text-slate-900 dark:text-white mb-4">
                   Consulta Agendada com Sucesso!
                 </h2>
-                <p className="text-slate-600 mb-6">
+                <p className="text-slate-600 dark:text-slate-400 mb-6">
                   Seu agendamento foi confirmado. Em breve você
                   receberá um e-mail com todos os detalhes.
                 </p>
               </div>
 
-              <div className="bg-slate-50 rounded-lg p-6 space-y-3 text-left">
+              <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6 space-y-3 text-left">
                 <div className="flex justify-between">
-                  <span className="text-slate-600">
+                  <span className="text-slate-600 dark:text-slate-400">
                     Dentista:
                   </span>
-                  <span className="text-slate-900">
+                  <span className="text-slate-900 dark:text-white">
                     {getDentistaNome().split(" - ")[0]}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600">
+                  <span className="text-slate-600 dark:text-slate-400">
                     Procedimento:
                   </span>
-                  <span className="text-slate-900">
+                  <span className="text-slate-900 dark:text-white">
                     {getProcedimentoNome()}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600">Data:</span>
-                  <span className="text-slate-900">
+                  <span className="text-slate-600 dark:text-slate-400">Data:</span>
+                  <span className="text-slate-900 dark:text-white">
                     {formatarData(formData.data)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600">
+                  <span className="text-slate-600 dark:text-slate-400">
                     Horário:
                   </span>
-                  <span className="text-slate-900">
+                  <span className="text-slate-900 dark:text-white">
                     {formData.hora}
                   </span>
                 </div>
@@ -488,7 +505,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
 
               <button
                 onClick={reiniciarAgendamento}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30"
+                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30"
               >
                 Agendar Nova Consulta
               </button>
@@ -501,7 +518,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
               {currentStep > 1 && (
                 <button
                   onClick={voltarPasso}
-                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 border border-slate-300"
+                  className="flex-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-600"
                 >
                   <ChevronLeft className="w-5 h-5" />
                   Voltar
@@ -510,7 +527,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
 
               <button
                 onClick={avancarPasso}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-blue-500/30"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-blue-500/30"
               >
                 {currentStep === 3
                   ? "Confirmar Agendamento"
@@ -524,7 +541,7 @@ export function BookingPage({ onBack, patientId }: BookingPageProps) {
         </div>
 
         {/* Footer Info */}
-        <div className="text-center mt-8 text-slate-500 text-sm">
+        <div className="text-center mt-8 text-slate-500 dark:text-slate-400 text-sm">
           <p>
             Horário de atendimento: Segunda a Sexta, 08:00 -
             18:00

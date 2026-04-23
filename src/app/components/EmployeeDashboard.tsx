@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
-import { 
-  Calendar, 
-  Clock, 
-  User, 
-  LogOut, 
-  Wrench, 
-  FileText, 
-  Plus, 
-  Users, 
+import {
+  Calendar,
+  Clock,
+  User,
+  LogOut,
+  Wrench,
+  FileText,
+  Plus,
+  Users,
   Stethoscope,
   UserPlus,
   Send,
   Edit,
   CheckCircle,
-  XCircle
+  XCircle,
+  Moon,
+  Sun
 } from 'lucide-react';
 import logoImage from 'figma:asset/57deffdb02e805463990fbf1ee80a9891070f68a.png';
+import { useTheme } from './ThemeProvider';
 
 interface EmployeeDashboardProps {
   onLogout: () => void;
@@ -53,8 +56,9 @@ interface NoteForDentist {
 }
 
 export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
+  const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<'schedule' | 'equipment' | 'notes' | 'register'>('schedule');
-  
+
   // Data states
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [patients, setPatients] = useState<any[]>([]);
@@ -244,21 +248,32 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-300">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <img src={logoImage} alt="Logo COB" className="w-10 h-10 object-contain" />
-              <span className="text-blue-600">Clínica Odontológica do Brás</span>
+              <span className="text-blue-600 dark:text-blue-400">Clínica Odontológica do Brás</span>
             </div>
-            
+
             <div className="flex items-center gap-4">
-              <span className="text-slate-600">Portal do Funcionário</span>
+              <span className="text-slate-600 dark:text-slate-300">Portal do Funcionário</span>
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
+              </button>
               <button
                 onClick={onLogout}
-                className="flex items-center gap-2 text-slate-600 hover:text-red-600 transition-colors"
+                className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Sair
@@ -273,30 +288,30 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
         <div className="max-w-7xl mx-auto">
           {/* Welcome Section */}
           <div className="mb-8">
-            <h1 className="text-slate-900 mb-2">Painel do Funcionário</h1>
-            <p className="text-slate-600">Gerencie horários, equipamentos e cadastros</p>
+            <h1 className="text-slate-900 dark:text-white mb-2">Painel do Funcionário</h1>
+            <p className="text-slate-600 dark:text-slate-400">Gerencie horários, equipamentos e cadastros</p>
           </div>
 
           {/* Message Banner */}
           {message && (
             <div className={`mb-6 rounded-lg p-4 ${
-              message.type === 'success' 
-                ? 'bg-green-50 border border-green-200 text-green-700' 
-                : 'bg-red-50 border border-red-200 text-red-700'
+              message.type === 'success'
+                ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+                : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
             }`}>
               {message.text}
             </div>
           )}
 
           {/* Tabs Navigation */}
-          <div className="bg-white border border-slate-200 rounded-xl mb-6 p-2">
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl mb-6 p-2 transition-colors duration-300">
             <div className="flex gap-2">
               <button
                 onClick={() => setActiveTab('schedule')}
                 className={`flex-1 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'schedule'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
                 <Calendar className="w-4 h-4" />
@@ -306,8 +321,8 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                 onClick={() => setActiveTab('equipment')}
                 className={`flex-1 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'equipment'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
                 <Wrench className="w-4 h-4" />
@@ -317,8 +332,8 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                 onClick={() => setActiveTab('notes')}
                 className={`flex-1 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'notes'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
                 <FileText className="w-4 h-4" />
@@ -328,8 +343,8 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                 onClick={() => setActiveTab('register')}
                 className={`flex-1 py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'register'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
                 <UserPlus className="w-4 h-4" />
@@ -340,42 +355,42 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
 
           {/* Schedule Tab */}
           {activeTab === 'schedule' && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h2 className="text-slate-900 mb-6">Tabela de Horários</h2>
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-colors duration-300">
+              <h2 className="text-slate-900 dark:text-white mb-6">Tabela de Horários</h2>
 
               {appointments.length === 0 ? (
                 <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-600">Nenhuma consulta agendada</p>
+                  <Calendar className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-600 dark:text-slate-400">Nenhuma consulta agendada</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-slate-200">
-                        <th className="text-left py-3 px-4 text-slate-700">Data</th>
-                        <th className="text-left py-3 px-4 text-slate-700">Horário</th>
-                        <th className="text-left py-3 px-4 text-slate-700">Paciente</th>
-                        <th className="text-left py-3 px-4 text-slate-700">Dentista</th>
-                        <th className="text-left py-3 px-4 text-slate-700">Procedimento</th>
-                        <th className="text-left py-3 px-4 text-slate-700">Status</th>
+                      <tr className="border-b border-slate-200 dark:border-slate-700">
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Data</th>
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Horário</th>
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Paciente</th>
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Dentista</th>
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Procedimento</th>
+                        <th className="text-left py-3 px-4 text-slate-700 dark:text-slate-300">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {appointments.map((appointment) => {
                         const upcoming = isUpcoming(appointment.date, appointment.time);
                         return (
-                          <tr key={appointment.id} className="border-b border-slate-100 hover:bg-slate-50">
-                            <td className="py-3 px-4 text-slate-900">{formatDate(appointment.date)}</td>
-                            <td className="py-3 px-4 text-slate-900">{appointment.time}</td>
-                            <td className="py-3 px-4 text-slate-900">{getPatientName(appointment.patientId)}</td>
-                            <td className="py-3 px-4 text-slate-900">{appointment.dentistName}</td>
-                            <td className="py-3 px-4 text-slate-900">{appointment.procedureName}</td>
+                          <tr key={appointment.id} className="border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                            <td className="py-3 px-4 text-slate-900 dark:text-white">{formatDate(appointment.date)}</td>
+                            <td className="py-3 px-4 text-slate-900 dark:text-white">{appointment.time}</td>
+                            <td className="py-3 px-4 text-slate-900 dark:text-white">{getPatientName(appointment.patientId)}</td>
+                            <td className="py-3 px-4 text-slate-900 dark:text-white">{appointment.dentistName}</td>
+                            <td className="py-3 px-4 text-slate-900 dark:text-white">{appointment.procedureName}</td>
                             <td className="py-3 px-4">
                               <span className={`text-xs px-2 py-1 rounded-full ${
-                                upcoming 
-                                  ? 'bg-green-100 text-green-700 border border-green-300' 
-                                  : 'bg-slate-100 text-slate-700 border border-slate-300'
+                                upcoming
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-700'
+                                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
                               }`}>
                                 {upcoming ? 'Pendente' : 'Realizada'}
                               </span>
@@ -392,21 +407,21 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
 
           {/* Equipment Tab */}
           {activeTab === 'equipment' && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h2 className="text-slate-900 mb-6">Gerenciar Equipamentos</h2>
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-colors duration-300">
+              <h2 className="text-slate-900 dark:text-white mb-6">Gerenciar Equipamentos</h2>
 
               <div className="grid md:grid-cols-2 gap-4">
                 {equipment.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-slate-200 rounded-lg p-4"
+                    className="border border-slate-200 dark:border-slate-700 rounded-lg p-4"
                   >
                     <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Wrench className="w-5 h-5 text-slate-600" />
+                      <div className="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Wrench className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-slate-900 mb-2">{item.name}</h3>
+                        <h3 className="text-slate-900 dark:text-white mb-2">{item.name}</h3>
                         <span className={`text-xs px-2 py-1 rounded-full border ${getEquipmentStatusColor(item.status)}`}>
                           {getEquipmentStatusText(item.status)}
                         </span>
@@ -416,19 +431,19 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleUpdateEquipmentStatus(item.id, 'available')}
-                        className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 px-3 py-2 rounded-lg text-sm transition-colors border border-green-200"
+                        className="flex-1 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-2 rounded-lg text-sm transition-colors border border-green-200 dark:border-green-800"
                       >
                         Disponível
                       </button>
                       <button
                         onClick={() => handleUpdateEquipmentStatus(item.id, 'in-use')}
-                        className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm transition-colors border border-blue-200"
+                        className="flex-1 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-3 py-2 rounded-lg text-sm transition-colors border border-blue-200 dark:border-blue-800"
                       >
                         Em Uso
                       </button>
                       <button
                         onClick={() => handleUpdateEquipmentStatus(item.id, 'maintenance')}
-                        className="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 px-3 py-2 rounded-lg text-sm transition-colors border border-amber-200"
+                        className="flex-1 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-3 py-2 rounded-lg text-sm transition-colors border border-amber-200 dark:border-amber-800"
                       >
                         Manutenção
                       </button>
@@ -441,13 +456,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
 
           {/* Notes Tab */}
           {activeTab === 'notes' && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h2 className="text-slate-900 mb-6">Enviar Anotações para Dentistas</h2>
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-colors duration-300">
+              <h2 className="text-slate-900 dark:text-white mb-6">Enviar Anotações para Dentistas</h2>
 
               {appointments.length === 0 ? (
                 <div className="text-center py-12">
-                  <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-600">Nenhuma consulta disponível para anotações</p>
+                  <FileText className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-600 dark:text-slate-400">Nenhuma consulta disponível para anotações</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -460,27 +475,27 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       <div
                         key={appointment.id}
                         className={`border rounded-lg p-4 ${
-                          upcoming ? 'border-blue-300 bg-blue-50' : 'border-slate-200'
+                          upcoming ? 'border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700'
                         }`}
                       >
                         <div className="mb-3">
-                          <h3 className="text-slate-900 mb-2">{appointment.procedureName}</h3>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-slate-600">
+                          <h3 className="text-slate-900 dark:text-white mb-2">{appointment.procedureName}</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-slate-600 dark:text-slate-400">
                             <div>
-                              <span className="text-slate-500">Paciente:</span>
-                              <p className="text-slate-900">{getPatientName(appointment.patientId)}</p>
+                              <span className="text-slate-500 dark:text-slate-400">Paciente:</span>
+                              <p className="text-slate-900 dark:text-white">{getPatientName(appointment.patientId)}</p>
                             </div>
                             <div>
-                              <span className="text-slate-500">Dentista:</span>
-                              <p className="text-slate-900">{appointment.dentistName}</p>
+                              <span className="text-slate-500 dark:text-slate-400">Dentista:</span>
+                              <p className="text-slate-900 dark:text-white">{appointment.dentistName}</p>
                             </div>
                             <div>
-                              <span className="text-slate-500">Data:</span>
-                              <p className="text-slate-900">{formatDate(appointment.date)}</p>
+                              <span className="text-slate-500 dark:text-slate-400">Data:</span>
+                              <p className="text-slate-900 dark:text-white">{formatDate(appointment.date)}</p>
                             </div>
                             <div>
-                              <span className="text-slate-500">Horário:</span>
-                              <p className="text-slate-900">{appointment.time}</p>
+                              <span className="text-slate-500 dark:text-slate-400">Horário:</span>
+                              <p className="text-slate-900 dark:text-white">{appointment.time}</p>
                             </div>
                           </div>
                         </div>
@@ -488,11 +503,11 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                         {/* Existing Notes */}
                         {existingNotes.length > 0 && (
                           <div className="mb-3 space-y-2">
-                            <p className="text-sm text-slate-600">Anotações enviadas:</p>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">Anotações enviadas:</p>
                             {existingNotes.map(note => (
-                              <div key={note.id} className="bg-white rounded p-3 text-sm border border-slate-200">
-                                <p className="text-slate-900">{note.note}</p>
-                                <p className="text-xs text-slate-500 mt-1">
+                              <div key={note.id} className="bg-white dark:bg-slate-700 rounded p-3 text-sm border border-slate-200 dark:border-slate-600">
+                                <p className="text-slate-900 dark:text-white">{note.note}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                                   {new Date(note.createdAt).toLocaleString('pt-BR')}
                                 </p>
                               </div>
@@ -507,12 +522,12 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                               value={noteText}
                               onChange={(e) => setNoteText(e.target.value)}
                               placeholder="Digite a anotação para o dentista..."
-                              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all min-h-[80px]"
+                              className="w-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all min-h-[80px]"
                             />
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleSendNoteToDoctor(appointment.id)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors"
+                                className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors"
                               >
                                 <Send className="w-4 h-4" />
                                 Enviar para Dentista
@@ -522,7 +537,7 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                                   setSelectedAppointmentForNote(null);
                                   setNoteText('');
                                 }}
-                                className="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm transition-colors"
+                                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm transition-colors"
                               >
                                 Cancelar
                               </button>
@@ -531,7 +546,7 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                         ) : (
                           <button
                             onClick={() => setSelectedAppointmentForNote(appointment.id)}
-                            className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-2"
+                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm flex items-center gap-2"
                           >
                             <Plus className="w-4 h-4" />
                             Adicionar anotação
@@ -549,13 +564,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
           {activeTab === 'register' && (
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Register Patient */}
-              <div className="bg-white border border-slate-200 rounded-xl p-6">
-                <h2 className="text-slate-900 mb-6">Cadastrar Novo Paciente</h2>
-                
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-colors duration-300">
+                <h2 className="text-slate-900 dark:text-white mb-6">Cadastrar Novo Paciente</h2>
+
                 <div className="space-y-4">
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <User className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       Nome Completo
                     </label>
                     <input
@@ -563,13 +578,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       value={newPatientName}
                       onChange={(e) => setNewPatientName(e.target.value)}
                       placeholder="Digite o nome completo"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <User className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       Login (2 caracteres)
                     </label>
                     <input
@@ -578,13 +593,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       onChange={(e) => setNewPatientUsername(e.target.value.toUpperCase())}
                       maxLength={2}
                       placeholder="Ex: AB"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all uppercase"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all uppercase"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <User className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       Senha (2 caracteres)
                     </label>
                     <input
@@ -593,13 +608,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       onChange={(e) => setNewPatientPassword(e.target.value)}
                       maxLength={2}
                       placeholder="Ex: 12"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   <button
                     onClick={handleRegisterPatient}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
                   >
                     <UserPlus className="w-5 h-5" />
                     Cadastrar Paciente
@@ -607,16 +622,16 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                 </div>
 
                 {/* Lista de Pacientes */}
-                <div className="mt-6 pt-6 border-t border-slate-200">
-                  <h3 className="text-slate-900 mb-3">Pacientes Cadastrados ({patients.length})</h3>
+                <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+                  <h3 className="text-slate-900 dark:text-white mb-3">Pacientes Cadastrados ({patients.length})</h3>
                   <div className="max-h-48 overflow-y-auto space-y-2">
                     {patients.map(patient => (
-                      <div key={patient.id} className="flex items-center justify-between bg-slate-50 rounded p-3">
+                      <div key={patient.id} className="flex items-center justify-between bg-slate-50 dark:bg-slate-700 rounded p-3">
                         <div>
-                          <p className="text-slate-900 text-sm">{patient.fullName}</p>
-                          <p className="text-slate-500 text-xs">Login: {patient.username}</p>
+                          <p className="text-slate-900 dark:text-white text-sm">{patient.fullName}</p>
+                          <p className="text-slate-500 dark:text-slate-400 text-xs">Login: {patient.username}</p>
                         </div>
-                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                       </div>
                     ))}
                   </div>
@@ -624,13 +639,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
               </div>
 
               {/* Register Dentist */}
-              <div className="bg-white border border-slate-200 rounded-xl p-6">
-                <h2 className="text-slate-900 mb-6">Cadastrar Novo Dentista</h2>
-                
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 transition-colors duration-300">
+                <h2 className="text-slate-900 dark:text-white mb-6">Cadastrar Novo Dentista</h2>
+
                 <div className="space-y-4">
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <Stethoscope className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <Stethoscope className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       Nome Completo
                     </label>
                     <input
@@ -638,13 +653,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       value={newDentistName}
                       onChange={(e) => setNewDentistName(e.target.value)}
                       placeholder="Digite o nome do dentista"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <Stethoscope className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <Stethoscope className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       Especialidade
                     </label>
                     <input
@@ -652,13 +667,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       value={newDentistSpecialty}
                       onChange={(e) => setNewDentistSpecialty(e.target.value)}
                       placeholder="Ex: Ortodontia"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-2 text-slate-700 mb-2">
-                      <FileText className="w-4 h-4 text-blue-600" />
+                    <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 mb-2">
+                      <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       CRM
                     </label>
                     <input
@@ -666,13 +681,13 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                       value={newDentistCRM}
                       onChange={(e) => setNewDentistCRM(e.target.value)}
                       placeholder="Ex: CRO-SP 12345"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                     />
                   </div>
 
                   <button
                     onClick={handleRegisterDentist}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
                   >
                     <UserPlus className="w-5 h-5" />
                     Cadastrar Dentista
@@ -680,18 +695,18 @@ export function EmployeeDashboard({ onLogout }: EmployeeDashboardProps) {
                 </div>
 
                 {/* Lista de Dentistas */}
-                <div className="mt-6 pt-6 border-t border-slate-200">
-                  <h3 className="text-slate-900 mb-3">Dentistas Cadastrados ({dentists.length})</h3>
+                <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+                  <h3 className="text-slate-900 dark:text-white mb-3">Dentistas Cadastrados ({dentists.length})</h3>
                   <div className="max-h-48 overflow-y-auto space-y-2">
                     {dentists.map(dentist => (
-                      <div key={dentist.id} className="bg-slate-50 rounded p-3">
+                      <div key={dentist.id} className="bg-slate-50 dark:bg-slate-700 rounded p-3">
                         <div className="flex items-start justify-between">
                           <div>
-                            <p className="text-slate-900 text-sm">{dentist.name}</p>
-                            <p className="text-slate-500 text-xs">{dentist.specialty}</p>
-                            <p className="text-slate-500 text-xs">{dentist.crm}</p>
+                            <p className="text-slate-900 dark:text-white text-sm">{dentist.name}</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-xs">{dentist.specialty}</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-xs">{dentist.crm}</p>
                           </div>
-                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                         </div>
                       </div>
                     ))}

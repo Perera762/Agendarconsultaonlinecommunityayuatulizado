@@ -6,6 +6,7 @@ import { RegisterPage } from './components/RegisterPage';
 import { PatientDashboard } from './components/PatientDashboard';
 import { DentistDashboard } from './components/DentistDashboard';
 import { EmployeeDashboard } from './components/EmployeeDashboard';
+import { ThemeProvider } from './components/ThemeProvider';
 
 type Page = 'home' | 'booking' | 'login' | 'register' | 'patient-dashboard' | 'dentist-dashboard' | 'employee-dashboard';
 
@@ -39,7 +40,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <ThemeProvider>
       {currentPage === 'home' && (
         <HomePage
           onNavigateToBooking={handleNavigateToBooking}
@@ -95,6 +96,6 @@ export default function App() {
           onLogout={handleLogout}
         />
       )}
-    </>
+    </ThemeProvider>
   );
 }

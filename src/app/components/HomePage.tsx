@@ -1,6 +1,7 @@
-import { Calendar, Shield, Star, Clock, Phone, MapPin, Mail, Sparkles, Award, Users, LogIn } from 'lucide-react';
+import { Calendar, Shield, Star, Clock, Phone, MapPin, Mail, Sparkles, Award, Users, LogIn, Moon, Sun } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import logoImage from 'figma:asset/57deffdb02e805463990fbf1ee80a9891070f68a.png';
+import { useTheme } from './ThemeProvider';
 
 interface HomePageProps {
   onNavigateToBooking: () => void;
@@ -8,6 +9,8 @@ interface HomePageProps {
 }
 
 export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePageProps) {
+  const { theme, toggleTheme } = useTheme();
+
   const servicos = [
     {
       icon: Shield,
@@ -71,27 +74,35 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-300">
       {/* Header/Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-700 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <img src={logoImage} alt="Logo COB" className="w-10 h-10 object-contain" />
-              <span className="text-blue-600">Clínica Odontológica do Brás</span>
+              <span className="text-blue-600 dark:text-blue-400">Clínica Odontológica do Brás</span>
             </div>
-            
+
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#servicos" className="text-slate-600 hover:text-blue-600 transition-colors">Serviços</a>
-              <a href="#equipe" className="text-slate-600 hover:text-blue-600 transition-colors">Equipe</a>
-              <a href="#depoimentos" className="text-slate-600 hover:text-blue-600 transition-colors">Depoimentos</a>
-              <a href="#contato" className="text-slate-600 hover:text-blue-600 transition-colors">Contato</a>
+              <a href="#servicos" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Serviços</a>
+              <a href="#equipe" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Equipe</a>
+              <a href="#depoimentos" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Depoimentos</a>
+              <a href="#contato" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contato</a>
             </nav>
 
             <div className="flex items-center gap-3">
               <button
+                onClick={toggleTheme}
+                className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-all duration-300 border border-slate-300 dark:border-slate-600"
+                aria-label="Alternar tema"
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </button>
+
+              <button
                 onClick={onNavigateToLogin}
-                className="bg-white hover:bg-slate-50 text-blue-600 px-6 py-2 rounded-lg transition-all duration-300 border border-blue-300 flex items-center gap-2"
+                className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 px-6 py-2 rounded-lg transition-all duration-300 border border-blue-300 dark:border-blue-500 flex items-center gap-2"
               >
                 <LogIn className="w-4 h-4" />
                 Login
@@ -118,16 +129,16 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-fadeIn">
-              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-blue-600 text-sm">Clínica Odontológica de Excelência</span>
+              <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-full px-4 py-2">
+                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-blue-600 dark:text-blue-400 text-sm">Clínica Odontológica de Excelência</span>
               </div>
-              
-              <h1 className="text-slate-900">
+
+              <h1 className="text-slate-900 dark:text-white">
                 Seu Sorriso Merece o Melhor Cuidado
               </h1>
-              
-              <p className="text-slate-600 text-lg leading-relaxed">
+
+              <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
                 Oferecemos tratamentos odontológicos de alta qualidade com tecnologia de ponta e uma equipe de profissionais experientes, dedicados ao seu bem-estar.
               </p>
 
@@ -142,24 +153,24 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
                 
                 <a
                   href="#servicos"
-                  className="bg-white hover:bg-slate-50 text-slate-700 px-8 py-4 rounded-lg transition-all duration-300 border border-slate-300 flex items-center justify-center gap-2"
+                  className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-8 py-4 rounded-lg transition-all duration-300 border border-slate-300 dark:border-slate-600 flex items-center justify-center gap-2"
                 >
                   Conheça Nossos Serviços
                 </a>
               </div>
 
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200">
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200 dark:border-slate-700">
                 <div>
-                  <div className="text-blue-600">15+</div>
-                  <p className="text-slate-500 text-sm">Anos de Experiência</p>
+                  <div className="text-blue-600 dark:text-blue-400">15+</div>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">Anos de Experiência</p>
                 </div>
                 <div>
-                  <div className="text-blue-600">5000+</div>
-                  <p className="text-slate-500 text-sm">Pacientes Atendidos</p>
+                  <div className="text-blue-600 dark:text-blue-400">5000+</div>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">Pacientes Atendidos</p>
                 </div>
                 <div>
-                  <div className="text-blue-600">98%</div>
-                  <p className="text-slate-500 text-sm">Satisfação</p>
+                  <div className="text-blue-600 dark:text-blue-400">98%</div>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">Satisfação</p>
                 </div>
               </div>
             </div>
@@ -169,7 +180,7 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1606811801193-e318c9a87ad7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZW50aXN0JTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2MDczNjAxOXww&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Clínica Odontológica"
-                className="relative rounded-2xl shadow-2xl border border-slate-200 w-full h-[500px] object-cover"
+                className="relative rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full h-[500px] object-cover"
               />
             </div>
           </div>
@@ -177,11 +188,11 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
       </section>
 
       {/* Serviços */}
-      <section id="servicos" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section id="servicos" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-slate-900 mb-4">Nossos Serviços</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
+            <h2 className="text-slate-900 dark:text-white mb-4">Nossos Serviços</h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
               Oferecemos uma ampla gama de tratamentos odontológicos para cuidar da sua saúde bucal
             </p>
           </div>
@@ -190,13 +201,13 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
             {servicos.map((servico, index) => (
               <div
                 key={index}
-                className="bg-white backdrop-blur-sm border border-slate-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group"
+                className="bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group"
               >
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-                  <servico.icon className="w-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-950/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
+                  <servico.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-slate-900 mb-2">{servico.titulo}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{servico.descricao}</p>
+                <h3 className="text-slate-900 dark:text-white mb-2">{servico.titulo}</h3>
+                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{servico.descricao}</p>
               </div>
             ))}
           </div>
@@ -204,11 +215,11 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
       </section>
 
       {/* Equipe */}
-      <section id="equipe" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="equipe" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-slate-900 mb-4">Nossa Equipe</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
+            <h2 className="text-slate-900 dark:text-white mb-4">Nossa Equipe</h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
               Profissionais altamente qualificados e dedicados ao seu sorriso
             </p>
           </div>
@@ -217,19 +228,19 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
             {dentistas.map((dentista, index) => (
               <div
                 key={index}
-                className="bg-white backdrop-blur-sm border border-slate-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+                className="bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
               >
-                <div className="h-48 bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
-                  <Users className="w-20 h-20 text-blue-300" />
+                <div className="h-48 bg-gradient-to-br from-blue-50 to-slate-100 dark:from-blue-950/30 dark:to-slate-800 flex items-center justify-center">
+                  <Users className="w-20 h-20 text-blue-300 dark:text-blue-600" />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-slate-900 mb-1">{dentista.nome}</h3>
-                  <p className="text-blue-600 text-sm mb-2">{dentista.especialidade}</p>
-                  <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
+                  <h3 className="text-slate-900 dark:text-white mb-1">{dentista.nome}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 text-sm mb-2">{dentista.especialidade}</p>
+                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-3">
                     <Award className="w-4 h-4" />
                     {dentista.experiencia} de experiência
                   </div>
-                  <p className="text-slate-600 text-sm leading-relaxed">{dentista.descricao}</p>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{dentista.descricao}</p>
                 </div>
               </div>
             ))}
@@ -238,11 +249,11 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
       </section>
 
       {/* Depoimentos */}
-      <section id="depoimentos" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section id="depoimentos" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-slate-900 mb-4">O Que Nossos Pacientes Dizem</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
+            <h2 className="text-slate-900 dark:text-white mb-4">O Que Nossos Pacientes Dizem</h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
               A satisfação dos nossos pacientes é nossa maior conquista
             </p>
           </div>
@@ -251,15 +262,15 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
             {depoimentos.map((depoimento, index) => (
               <div
                 key={index}
-                className="bg-white backdrop-blur-sm border border-slate-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-300"
+                className="bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300"
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(depoimento.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-blue-500 text-blue-500" />
+                    <Star key={i} className="w-4 h-4 fill-blue-500 dark:fill-blue-400 text-blue-500 dark:text-blue-400" />
                   ))}
                 </div>
-                <p className="text-slate-700 mb-4 leading-relaxed">{depoimento.texto}</p>
-                <p className="text-blue-600">{depoimento.nome}</p>
+                <p className="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">{depoimento.texto}</p>
+                <p className="text-blue-600 dark:text-blue-400">{depoimento.nome}</p>
               </div>
             ))}
           </div>
@@ -267,11 +278,11 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900 transition-colors duration-300">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-12 text-center">
-            <h2 className="text-slate-900 mb-4">Pronto para Transformar seu Sorriso?</h2>
-            <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-12 text-center">
+            <h2 className="text-slate-900 dark:text-white mb-4">Pronto para Transformar seu Sorriso?</h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
               Agende sua consulta agora e dê o primeiro passo para um sorriso mais saudável e bonito
             </p>
             <button
@@ -286,49 +297,49 @@ export function HomePage({ onNavigateToBooking, onNavigateToLogin }: HomePagePro
       </section>
 
       {/* Contato/Footer */}
-      <footer id="contato" className="bg-slate-900 border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8">
+      <footer id="contato" className="bg-slate-900 dark:bg-slate-950 border-t border-slate-800 dark:border-slate-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <img src={logoImage} alt="Logo COB" className="w-10 h-10 object-contain" />
-                <span className="text-blue-400">Clínica Odontológica do Brás</span>
+                <span className="text-blue-400 dark:text-blue-300">Clínica Odontológica do Brás</span>
               </div>
-              <p className="text-slate-400 leading-relaxed mb-4">
+              <p className="text-slate-400 dark:text-slate-500 leading-relaxed mb-4">
                 Clínica odontológica de excelência, comprometida com a saúde e beleza do seu sorriso há mais de 15 anos.
               </p>
             </div>
 
             <div>
-              <h3 className="text-white mb-4">Contato</h3>
-              <div className="space-y-3 text-slate-400 text-sm">
+              <h3 className="text-white dark:text-slate-200 mb-4">Contato</h3>
+              <div className="space-y-3 text-slate-400 dark:text-slate-500 text-sm">
                 <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-blue-400" />
+                  <Phone className="w-4 h-4 text-blue-400 dark:text-blue-300" />
                   (11) 2081-0106
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-blue-400" />
+                  <Mail className="w-4 h-4 text-blue-400 dark:text-blue-300" />
                   cobcontato@gmail.com
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 className="text-white mb-4">Localização</h3>
-              <div className="space-y-3 text-slate-400 text-sm">
+              <h3 className="text-white dark:text-slate-200 mb-4">Localização</h3>
+              <div className="space-y-3 text-slate-400 dark:text-slate-500 text-sm">
                 <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 text-blue-400 dark:text-blue-300 mt-1 flex-shrink-0" />
                   <span>R. Gomes Cardim, 55 - Brás<br />São Paulo - SP</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-blue-400" />
+                  <Clock className="w-4 h-4 text-blue-400 dark:text-blue-300" />
                   Seg-Sex: 08:00-18:00
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+          <div className="border-t border-slate-800 dark:border-slate-900 pt-8 text-center text-slate-500 dark:text-slate-600 text-sm">
             <p>&copy; 2025 Clínica Odontológica do Brás. Todos os direitos reservados.</p>
           </div>
         </div>
